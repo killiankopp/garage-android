@@ -54,6 +54,10 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     // DataStore Preferences (from version catalog)
     implementation(libs.androidx.datastore.preferences)
+    // OkHttp for API calls
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+    // OkHttp logging interceptor
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

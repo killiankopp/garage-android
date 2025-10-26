@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Allow cleartext (HTTP) globally for development/testing. Remove or tighten for production. -->
+    <base-config cleartextTrafficPermitted="true" />
+
+    <!-- Allow cleartext (HTTP) to the specific local IP used in your setup -->
+    <domain-config cleartextTrafficPermitted="true">
+        <!-- IP or hostname of your API server -->
+        <domain includeSubdomains="true">10.0.0.135</domain>
+    </domain-config>
+
+</network-security-config>
