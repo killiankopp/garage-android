@@ -9,7 +9,8 @@ import org.json.JSONObject
 import java.util.concurrent.TimeUnit
 
 private val httpClient: OkHttpClient by lazy {
-    val logging = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
+    // WARNING: HEADERS logging will print Authorization header to logcat. Use only for local debugging.
+    val logging = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.HEADERS }
     OkHttpClient.Builder()
         .connectTimeout(10, TimeUnit.SECONDS)
         .readTimeout(10, TimeUnit.SECONDS)
@@ -81,9 +82,37 @@ object ApiClient {
                     autoCloseTime = autoCloseTime,
                     autoCloseRemaining = autoCloseRemaining
                 )
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 return@withContext null
             }
+        }
+    }
+
+    // Send GET /gate/open with Authorization header. Returns true if request succeeded (HTTP 2xx).
+    suspend fun openGate(baseUrl: String, bearerToken: String): Boolean = withContext(Dispatchers.IO) {
+        val url = makeUrl(baseUrl, "gate/open")
+        val req = Request.Builder()
+            .url(url)
+            .get()
+            .addHeader("Accept", "application/json")
+            .addHeader("Authorization", "Bearer $bearerToken")
+            .build()
+        httpClient.newCall(req).execute().use { resp ->
+            return@withContext resp.isSuccessful
+        }
+    }
+
+    // Send GET /gate/close with Authorization header. Returns true if request succeeded (HTTP 2xx).
+    suspend fun closeGate(baseUrl: String, bearerToken: String): Boolean = withContext(Dispatchers.IO) {
+        val url = makeUrl(baseUrl, "gate/close")
+        val req = Request.Builder()
+            .url(url)
+            .get()
+            .addHeader("Accept", "application/json")
+            .addHeader("Authorization", "Bearer $bearerToken")
+            .build()
+        httpClient.newCall(req).execute().use { resp ->
+            return@withContext resp.isSuccessful
         }
     }
 }

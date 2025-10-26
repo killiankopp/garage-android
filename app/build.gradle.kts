@@ -58,6 +58,8 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     // OkHttp logging interceptor
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
+    // Material icons extended (Visibility / VisibilityOff)
+    implementation("androidx.compose.material:material-icons-extended")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -2,11 +2,14 @@ package fr.skit.garage
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
@@ -25,6 +28,7 @@ fun SettingsScreen(
 
     var urlState by remember { mutableStateOf(url) }
     var tokenState by remember { mutableStateOf(token) }
+    var tokenVisible by remember { mutableStateOf(false) }
     var openState by remember { mutableStateOf(openTime.toString()) }
     var closeState by remember { mutableStateOf(closeTime.toString()) }
 
@@ -39,7 +43,7 @@ fun SettingsScreen(
             title = { Text(text = "Paramètres") },
             navigationIcon = {
                 IconButton(onClick = onBack) {
-                    Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Retour")
+                    Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Retour")
                 }
             }
         )
@@ -65,6 +69,13 @@ fun SettingsScreen(
                 coroutineScope.launch { repository.saveToken(new) }
             },
             label = { Text("Token") },
+            visualTransformation = if (tokenVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                val image = if (tokenVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff
+                IconButton(onClick = { tokenVisible = !tokenVisible }) {
+                    Icon(imageVector = image, contentDescription = if (tokenVisible) "Masquer token" else "Afficher token")
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp)
