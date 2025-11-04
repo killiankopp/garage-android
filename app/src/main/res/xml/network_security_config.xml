@@ -6,7 +6,16 @@
     <!-- Allow cleartext (HTTP) to the specific local IP used in your setup -->
     <domain-config cleartextTrafficPermitted="true">
         <!-- IP or hostname of your API server -->
-        <domain includeSubdomains="true">10.0.0.135</domain>
+        <domain includeSubdomains="true">10.0.0.134</domain>
+    </domain-config>
+
+    <domain-config>
+        <domain includeSubdomains="true">api.amazone.lan</domain>
+        <trust-anchors>
+            <certificates src="@raw/my_ca" />
+            <certificates src="user" />
+            <certificates src="system" />
+        </trust-anchors>
     </domain-config>
 
 </network-security-config>
